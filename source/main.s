@@ -7,9 +7,11 @@ _start:
 
 b main
 
+.section .text
+
 main:
    mov r1,#1
-   lsl r1,#3  /* -> 000 001 000 */
+   lsl r1,#3                     @ -> 000 001 000
    ldr r0,=GPFSEL2
    str r1,[r0]
    mov r1,#1

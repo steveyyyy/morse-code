@@ -2,6 +2,11 @@
 .include "morse.inc"
 .include "timer.inc"
 
+
+.section .data
+stringToBeMorsed: 
+.asciz "SOS"                     @ each letter is 8-bits (= 1 Byte) -> can use byte loader; .asciz := string, which ends with NULL
+
 .globl _start
 _start:
 
@@ -10,7 +15,7 @@ b main
 .section .text
 
 main:
-   mov r1,#1
+   mov r1,#1                     @ 000 000 001
    lsl r1,#3                     @ -> 000 001 000
    ldr r0,=GPFSEL2
    str r1,[r0]

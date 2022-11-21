@@ -20,13 +20,13 @@ main:
    ldr r0,=GPFSEL2
    str r1,[r0]
    mov r1,#1
-   lsl r1,#21
+   lsl r1,#21  @ on, output pin
 
 MainLoop:
    ldr r0,=GPCLR0
    str r1,[r0]
 
-   mov r2,#0x3F0000
+   mov r2,#0x3F0000              @ set pause
    bl reinitialise
 
    mov r8,#0

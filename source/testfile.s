@@ -69,9 +69,31 @@ checkMorse:
 
 
 doMorse:
-    mov r2, #100
-    @ switch statemement? irgendwie schade, die info wegzuschmeissen, ob man von letter oder number kommt
-b loopIncrement
+    @ switch statemement oder binary search? irgendwie schade, die info wegzuschmeissen, ob man von letter oder number kommt
+    @ https://thinkingeek.com/2013/08/23/arm-assembler-raspberry-pi-chapter-16/
+
+    case_0:
+        cmp r0, #48
+        bne case_1
+        @ TODO code for morse 0
+        mov r2, #100  @ TODO remove, just here for testpurposes to see if branching works
+        b loopIncrement
+    
+    case_1:
+        cmp r0, #49
+        bne case_S
+        @ TODO code for morsing 1
+        mov r2, #200  @ TODO remove, just here for testpurposes to see if branching works
+        b loopIncrement
+    case_S:
+        cmp r0, #83
+        bne default
+        @ TODO code for morsing S
+        mov r2, #300  @ TODO remove, just here for testpurposes to see if branching works
+        b loopIncrement
+    default:
+        mov r2, #50  @ TODO remove, just here for testpurposes to see if branching works
+        b loopIncrement
 
 morseNumber:
     cmp r0, #48

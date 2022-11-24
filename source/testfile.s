@@ -1,5 +1,5 @@
 @ https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/how-to-call-a-function-from-arm-assembler
-@ maybe write morse function and use the letter to be morsed as a parameter on the stack?
+
 
 /*
 .include "base.inc"
@@ -18,7 +18,8 @@
 
 
 morseString:                        @ string saved in RAM
-.asciz "soS9@"                      @ each letter is 8-bits (= 1 Byte) -> can use byte loader; .asciz := string, which ends with NULL
+@ each letter is 8-bits (= 1 Byte) -> can use byte loader; .asciz := string, which ends with NULL
+.asciz "soS 9@"                     
 
 .section .init  @ nicht sicher ob notwendig, CPUlator wollte das so
 .globl _start
@@ -45,6 +46,7 @@ MainLoop:
         ldrb r0, [r8]                @ load one byte (-> one letter!) at r8 into r0
         cmp r0, #0                   @ check if value is null -> break
         beq endOfString
+        cmp r0, #32
         cmp r0,#97                   @ check if < 97; ASCII boundary for lower case letter
         blt checkMorse
         cmp r0, #122                 @ check if > 122; ASCII boundary for lower case letter
@@ -61,13 +63,20 @@ loopIncrement:
     b convertToUpperCase
 
 checkMorse:
-    cmp r0, #57
+    cmp r0, #32
+    beq morse_space
+    cmp r0, #57             @ 9
     ble morseNumber
-    cmp r0, #65
+    cmp r0, #65             @ A
     bge morseLetter
     b loopIncrement
 
+morse_space:
+    mov r2, #32
+    b loopIncrement
 
+
+@ both, morse_number and morse_letter are implemented as binary tree
 morseNumber:
     cmp r0, #48
     blt loopIncrement
@@ -197,7 +206,7 @@ morse_X_to_Z:
 @ ----------------------------------
 endOfString:
     nop @ infinite Loop
-b endOfString
+b MainLoop
 
 
 @ individual cases, still formulated as test @ TODO replace with actual morse

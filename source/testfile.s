@@ -17,8 +17,8 @@
 .equ GPCLR0, GPIO_BASE + 0x28       @ pin is off
 
 
-morseString:
-.asciz "soS9@"                       @ each letter is 8-bits (= 1 Byte) -> can use byte loader; .asciz := string, which ends with NULL
+morseString:                        @ string saved in RAM
+.asciz "soS9@"                      @ each letter is 8-bits (= 1 Byte) -> can use byte loader; .asciz := string, which ends with NULL
 
 .section .init  @ nicht sicher ob notwendig, CPUlator wollte das so
 .globl _start
@@ -38,11 +38,11 @@ main:
 
 
 MainLoop:
-    ldr r10, =morseString            @ load string
-    mov r9,#0                        @ counter of iterations
+    ldr r10, =morseString            @ load address of string into register
+    mov r9,#0                        @ r9: counter of iterations
     convertToUpperCase:              @ while loop
         add r8, r9, r10
-        ldrb r0, [r8]                @ load current letter in r0
+        ldrb r0, [r8]                @ load one byte (-> one letter!) at r8 into r0
         cmp r0, #0                   @ check if value is null -> break
         beq endOfString
         cmp r0,#97                   @ check if < 97; ASCII boundary for lower case letter
@@ -67,10 +67,6 @@ checkMorse:
     bge morseLetter
     b loopIncrement
 
-
-doMorse:
-    @ switch statemement oder binary search? irgendwie schade, die info wegzuschmeissen, ob man von letter oder number kommt
-    @ https://thinkingeek.com/2013/08/23/arm-assembler-raspberry-pi-chapter-16/
 
 morseNumber:
     cmp r0, #48
@@ -196,9 +192,9 @@ morse_X_to_Z:
     beq morse_Y
     blt morse_X
     bgt morse_Z
-    
 
 
+@ ----------------------------------
 endOfString:
     nop @ infinite Loop
 b endOfString
@@ -249,7 +245,6 @@ morse_9:
     mov r2, #9
     b loopIncrement
 
-@ ----------------------------------
 
 @ Letters --------------------------
 

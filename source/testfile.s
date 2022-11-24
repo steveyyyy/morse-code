@@ -1,6 +1,6 @@
 @ https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/how-to-call-a-function-from-arm-assembler
 
-
+@ TODO implement starting signal and end of signal
 /*
 .include "base.inc"
 .include "morse.inc"

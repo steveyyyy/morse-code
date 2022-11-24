@@ -157,7 +157,46 @@ morse_J_to_L:
     blt morse_J
     bgt morse_L
 
+morse_N_to_Z:
+    cmp r0, #84
+    beq morse_T
+    blt morse_N_to_S
+    bgt morse_U_to_Z
 
+morse_N_to_S:
+    cmp r0, #80
+    beq morse_P
+    blt morse_N_to_O
+    bgt morse_Q_to_S
+
+morse_N_to_O:
+    cmp r0, #78
+    beq morse_N
+    bgt morse_O
+
+morse_Q_to_S:
+    cmp r0, #82
+    beq morse_R
+    blt morse_Q
+    bgt morse_S
+
+morse_U_to_Z:
+    cmp r0, #87
+    beq morse_W
+    blt morse_U_to_V
+    bgt morse_X_to_Z
+
+morse_U_to_V:
+    cmp r0, #85
+    beq morse_U
+    bgt morse_V
+
+morse_X_to_Z:
+    cmp r0, #89
+    beq morse_Y
+    blt morse_X
+    bgt morse_Z
+    
 
 
 endOfString:

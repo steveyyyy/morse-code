@@ -26,7 +26,7 @@
 
 
 morseString:                        @ string saved in RAM
-@ each letter is 8-bits (= 1 Byte) -> can use byte loader; .asciz := string, which ends with NULL
+@ each letter is 8-bits (= 1 Byte) -> can use byte loader; .asciz := string, which ends with 0
 .asciz "soS 9@"                     
 
 .section .init  @ nicht sicher ob notwendig, CPUlator wollte das so
@@ -47,6 +47,7 @@ main:
 
 
 MainLoop:
+    bl morseStartSignal
     ldr r10, =morseString            @ load address of string into register
     mov r9,#0                        @ r9: counter of iterations
     convertToUpperCase:              @ while loop
@@ -54,7 +55,6 @@ MainLoop:
         ldrb r0, [r8]                @ load one byte (-> one letter!) at r8 into r0
         cmp r0, #0                   @ check if value is null -> break
         beq endOfString
-        cmp r0, #32
         cmp r0,#97                   @ check if < 97; ASCII boundary for lower case letter
         blt checkMorse
         cmp r0, #122                 @ check if > 122; ASCII boundary for lower case letter
@@ -72,19 +72,31 @@ loopIncrement:
 
 checkMorse:
     cmp r0, #32
-    beq morse_space
+    beq morseSpace
     cmp r0, #57             @ 9
     ble morseNumber
     cmp r0, #65             @ A
     bge morseLetter
-    b loopIncrement
+    b loopIncrement         @ if we do not have a morse signal (neither number, letter or space), skip symbol
 
-morse_space:
+morseSpace:
     mov r2, #32
     b loopIncrement
 
+morseStartSignal:
+    mov r2, #1
+    bx lr
 
-@ both, morse_number and morse_letter are implemented as binary tree
+morseEndSignal:
+    mov r2, #2
+    bx lr
+
+endOfString:
+    bl morseEndSignal       @ start again with morse signal
+b MainLoop
+
+
+@ both, morseNumber and morseLetter are implemented as (individual) binary trees
 morseNumber:
     cmp r0, #48
     blt loopIncrement
@@ -212,9 +224,6 @@ morse_X_to_Z:
 
 
 @ ----------------------------------
-endOfString:
-    nop @ infinite Loop
-b MainLoop
 
 
 @ individual cases, still formulated as test @ TODO replace with actual morse

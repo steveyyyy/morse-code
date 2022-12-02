@@ -68,6 +68,7 @@ MainLoop:
 
 loopIncrement:
     add r9, #1               @ increment offset
+    @ Pause zwischen Buchstaben
     b convertToUpperCase
 
 checkMorse:
@@ -276,6 +277,8 @@ morse_9:
 
 morse_A:
     mov r2, #65
+    @ - -
+
     b loopIncrement
 
 morse_B:

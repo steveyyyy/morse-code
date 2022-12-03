@@ -135,7 +135,7 @@ morse_8_to_9:
     bgt morse_9
 
 
-morseLetter:
+morseLetter:                @ Pietro A-M, Ladina N-Z
     cmp r0, #90
     bgt loopIncrement
     morse_A_to_Z:           @ #-ASCII: [65, 90]
@@ -229,7 +229,7 @@ morse_X_to_Z:
 
 @ individual cases, still formulated as test @ TODO replace with actual morse
 
-@ numbers -------------------------
+@ numbers ------------------------- 
 morse_0:
     @ TODO code for morse 0
     mov r2, #0  @ TODO remove, just here for testpurposes to see if branching works
@@ -277,7 +277,7 @@ morse_9:
 
 morse_A:
     mov r2, #65
-    @ - -
+    bl executeMorse_S
 
     b loopIncrement
 

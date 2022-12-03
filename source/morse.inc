@@ -1,21 +1,40 @@
+initialise_DOT:
+   mov r2,=DOT
+   ldr r0,=GPSET0
+   str r1,[r0]
+
+initialise_DASH:
+   mov r2,=DASH
+   ldr r0,=GPSET0
+   str r1,[r0]   
+
+initialise_Off:
+   ldr r0,=GPCLR0
+   str r1,[r0]
+   mov r2,=WITHIN_LETTER_SPACE
+
+initialise_PAUSE_BTWN_LETTERS:
+   ldr r0,=GPCLR0
+   str r1,[r0]
+   mov r2,=BETWEEN_LETTERS
+
+initialise_BETWEEN_WORDS:
+   ldr r0,=GPCLR0
+   str r1,[r0]
+   mov r2,=BETWEEN_WORDS
+
 
 /*
 Letter 'S'
  */
-initialise_sOn:
-   mov r2,#0x2F0000
-   ldr r0,=GPSET0
-   str r1,[r0]
+initialise_DOT_on
 
 execute_s_on:
    sub r2,#1
    cmp r2,#0   
    bne execute_s_on
 
-initialise_sOff:
-   ldr r0,=GPCLR0
-   str r1,[r0]
-   mov r2,#0x2F0000
+initialise_Off
    
 execute_s_off:
    sub r2,#1
@@ -32,20 +51,14 @@ executeMorse_S:
 
 // Morse the letter 'O'
 
-initialise_oOn:
-   mov r2,#0x6F0000
-   ldr r0,=GPSET0
-   str r1,[r0]   
+initialise_DASH
 
 execute_o_on:
    sub r2,#1
    cmp r2,#0   
    bne execute_o_on   
 
-initialise_oOff:
-   ldr r0,=GPCLR0
-   str r1,[r0]
-   mov r2,#0x6F0000
+initialise_Off @ Pause war vorher DASH
 
 execute_o_off:
    sub r2,#1
